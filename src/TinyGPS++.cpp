@@ -27,8 +27,55 @@ Foundation, Inc., 51 Franklin St, Fifth Floor, Boston, MA  02110-1301  USA
 #include <ctype.h>
 #include <stdlib.h>
 
+/* driver 
+if buf[0] == '$WIMDA': #  Meteorological Composite   Air Temp, Barometric Preasure
+
+try:
+
+data['altimeter'] = float(buf[1])
+
+data['outTemp'] = float(buf[5]) * 1.8 + 32
+
+except (ValueError):
+
+logerr("Wrong data format for $WIMDA '%s, %s, %s, %s, %s, %s, %s'" % (buf[1], buf[5], buf[9], buf[11], buf[13], buf[15], buf[17]))
+
+elif buf[0] == '$WIMWV': # Wind Speed and Angle
+
+if buf[5] == 'A':
+
+if buf[2] == 'R':
+
+try:
+
+data['windDir'] = float(buf[1])
+
+data['windSpeed'] = float(buf[3]) / 1.15077945
+
+except (ValueError):
+
+logerr("Wrong data format for $WIMWV A-R '%s, %s'" % (buf[1], buf[3]))
+
+elif buf[2] == 'T':
+
+try:
+
+data['windDir'] = float(buf[1])
+
+data['windSpeed'] = float(buf[3]) / 1.15077945
+
+except (ValueError):
+
+logerr("Wrong data format for $WIMWV A-T '%s, %s'" % (buf[1], buf[3]))
+
+return data*/
+
 #define _GPRMCterm   "GPRMC"
 #define _GPGGAterm   "GPGGA"
+//'$WIMWV': # Wind Speed and Angle
+#define _WIMWV   "WIMWV"
+//'$WIMDA': #  Meteorological Composite   Air Temp, Barometric Preasure
+#define _WIMDA   "WIMDA"
 
 TinyGPSPlus::TinyGPSPlus()
   :  parity(0)
@@ -168,7 +215,11 @@ bool TinyGPSPlus::endOfTermHandler()
 
       switch(curSentenceType)
       {
-      case GPS_SENTENCE_GPRMC:
+	  case  WIMMV_SENTENCE:
+		  break;
+	  case  WMIDA_SENTENCE:
+		  break;
+	  case GPS_SENTENCE_GPRMC:
         date.commit();
         time.commit();
         if (sentenceHasFix)
@@ -207,7 +258,11 @@ bool TinyGPSPlus::endOfTermHandler()
   // the first term determines the sentence type
   if (curTermNumber == 0)
   {
-    if (!strcmp(term, _GPRMCterm))
+	if (!strcmp(term, _WIMWV))
+		curSentenceType = WIMMV_SENTENCE;
+	else if (!strcmp(term, _WIMDA))
+		curSentenceType = WMIDA_SENTENCE;
+	else if (!strcmp(term, _GPRMCterm))
       curSentenceType = GPS_SENTENCE_GPRMC;
     else if (!strcmp(term, _GPGGAterm))
       curSentenceType = GPS_SENTENCE_GPGGA;
