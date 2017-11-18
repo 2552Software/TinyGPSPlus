@@ -204,19 +204,16 @@ struct TinyGPSWindSpeed : TinyGPSDouble
 
 struct Tempature : TinyGPSDouble
 {
-	double f() { return value(); }
-	double c() { return value(); } // todo
+	double F() { return value()* 1.8 + 32.0; } //
+	double C() { return value(); } // data stored in C
 };
 
 
 // barotmetic
-//https://www.sensorsone.com/barometric-mbar-hpa-psi-inhg-mmhg-torr-conversion-table/
-struct Baro : TinyGPSDouble
+struct BarometricPressure : TinyGPSDouble
 {
-	double inHg() { return value(); }
-	double psi() { return value(); } // todo
-	double mbar() { return value(); }// todo
-	// there are many more...
+	double inHg() { return value(); } //inches of mercury (aka inHg)
+	// change types via this if needed https://www.sensorsone.com/barometric-mbar-hpa-psi-inhg-mmhg-torr-conversion-table/
 };
 
 
@@ -277,7 +274,7 @@ public:
   TinyGPSDecimal hdop;
   TinyGPSWindSpeed windSpeed;
   TinyGPSDouble windDirection;
-  Baro barometric;
+  BarometricPressure barometric;
   Tempature tempature;
 
   static const char *libraryVersion() { return _GPS_VERSION; }

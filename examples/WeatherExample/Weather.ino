@@ -65,10 +65,10 @@ void displayInfo()
   }
 
   Serial.print(F(" "));
-  if (weatherStation.barometric.isValid())
+  if (weatherStation.barometric.inHg())
   {
     Serial.print(F("Barometric pressure: ")); 
-    Serial.print(weatherStation.barometric.value(), 6);
+    Serial.print(weatherStation.barometric.inHg(), 6);
   }
   else
   {
@@ -79,7 +79,9 @@ void displayInfo()
   if (weatherStation.tempature.isValid())
   {
     Serial.print(F("Tempature: ")); 
-    Serial.print(weatherStation.tempature.value(), 6);
+    Serial.print(weatherStation.tempature.F(), 6);
+    Serial.print(F(" Canada: ")); 
+    Serial.print(weatherStation.tempature.C(), 6);
   }
   else
   {

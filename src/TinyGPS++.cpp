@@ -265,7 +265,7 @@ bool TinyGPSPlus::endOfTermHandler()
 	case COMBINE(WIMMV_SENTENCE, 3):
 		windSpeed.set(term);
 		break;
-	case COMBINE(WIMMV_SENTENCE, 6):
+	case COMBINE(WIMMV_SENTENCE, 4):
 		windSpeed.windSpeedUnits = *term;
 		Serial.print(F("WIMMV_SENTENCE units "));
 		Serial.println(term);
@@ -278,7 +278,7 @@ bool TinyGPSPlus::endOfTermHandler()
 
 		Fields
 		<1>    Barometric pressure, inches of mercury, to the nearest 0.01 inch
-		<2>    I = inches of mercury
+		<2>    I = inches of mercury (aka inHg)
 		<3>    Barometric pressure, bars, to the nearest .001 bar
 		<4>    B = bars
 		<5>    Air temperature, degrees C, to the nearest 0.1 degree C
