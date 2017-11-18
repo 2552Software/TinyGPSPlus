@@ -79,7 +79,7 @@ void displayInfo()
   if (weatherStation.tempature.isValid())
   {
     Serial.print(F("Tempature: ")); 
-    Serial.print(weatherStation.tempature.F(), 6);
+    Serial.print(weatherStation.tempature.Fahrenheit(), 6);
     Serial.print(F(" Canada: ")); 
     Serial.print(weatherStation.tempature.C(), 6);
   }
