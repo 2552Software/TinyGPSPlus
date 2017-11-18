@@ -206,6 +206,7 @@ bool TinyGPSPlus::endOfTermHandler()
   // If it's the checksum term, and the checksum checks out, commit
   if (isChecksumTerm)
   {
+
     byte checksum = 16 * fromHex(term[0]) + fromHex(term[1]);
     if (checksum == parity)
     {
@@ -217,9 +218,11 @@ bool TinyGPSPlus::endOfTermHandler()
       {
 	  case  WIMMV_SENTENCE:
 		  windSpeed.commit();
+		  windDirection.commit();
 		  break;
 	  case  WMIDA_SENTENCE:
-		  windSpeed.commit();
+		  tempature.commit();
+		  barometric.commit();
 		  break;
 	  case GPS_SENTENCE_GPRMC:
         date.commit();
