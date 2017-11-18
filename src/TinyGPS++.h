@@ -171,6 +171,23 @@ struct TinyGPSSpeed : TinyGPSDecimal
    double kmph()     { return _GPS_KMPH_PER_KNOT * value() / 100.0; }
 };
 
+struct Tempature : TinyGPSDecimal
+{
+	double f() { return value(); }
+	double c() { return value(); } // todo
+};
+
+// barotmetic
+//https://www.sensorsone.com/barometric-mbar-hpa-psi-inhg-mmhg-torr-conversion-table/
+struct Baro : TinyGPSDecimal
+{
+	double inHg() { return value(); }
+	double psi() { return value(); } // todo
+	double mbar() { return value(); }// todo
+	// there are many more...
+};
+
+
 struct TinyGPSCourse : public TinyGPSDecimal
 {
    double deg()      { return value() / 100.0; }
@@ -215,7 +232,7 @@ class TinyGPSPlus
 {
 public:
   TinyGPSPlus();
-  bool encode(char c); // process one character received from GPS
+  bool encode(char c); // process one character received from GPS or other device
   TinyGPSPlus &operator << (char c) {encode(c); return *this;}
 
   TinyGPSLocation location;
@@ -226,6 +243,10 @@ public:
   TinyGPSAltitude altitude;
   TinyGPSInteger satellites;
   TinyGPSDecimal hdop;
+  TinyGPSSpeed windSpeed;
+  TinyGPSDecimal windDirection;
+  Baro barometric;
+  Tempature tempature;
 
   static const char *libraryVersion() { return _GPS_VERSION; }
 
@@ -242,7 +263,7 @@ public:
   uint32_t passedChecksum()   const { return passedChecksumCount; }
 
 private:
-  enum {GPS_SENTENCE_GPGGA, GPS_SENTENCE_GPRMC, GPS_SENTENCE_OTHER, WIMMV_SENTENCE, WMIDA_SENTENCE};
+  enum {GPS_SENTENCE_GPGGA, GPS_SENTENCE_GPRMC, GPS_SENTENCE_OTHER, WIMMV_SENTENCE=4, WMIDA_SENTENCE=8};
 
   // parsing state variables
   uint8_t parity;

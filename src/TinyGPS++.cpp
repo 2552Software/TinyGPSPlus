@@ -216,8 +216,10 @@ bool TinyGPSPlus::endOfTermHandler()
       switch(curSentenceType)
       {
 	  case  WIMMV_SENTENCE:
+		  windSpeed.commit();
 		  break;
 	  case  WMIDA_SENTENCE:
+		  windSpeed.commit();
 		  break;
 	  case GPS_SENTENCE_GPRMC:
         date.commit();
@@ -280,7 +282,19 @@ bool TinyGPSPlus::endOfTermHandler()
   if (curSentenceType != GPS_SENTENCE_OTHER && term[0])
     switch(COMBINE(curSentenceType, curTermNumber))
   {
-    case COMBINE(GPS_SENTENCE_GPRMC, 1): // Time in both sentences
+	case COMBINE(WIMMV_SENTENCE, 1):
+		windDirection.set(term);
+		break;
+	case COMBINE(WIMMV_SENTENCE, 3):
+		windSpeed.set(term);
+		break;
+	case COMBINE(WMIDA_SENTENCE, 1):
+		barometric.set(term);
+		brea;
+	case COMBINE(WMIDA_SENTENCE, 5):
+		tempature.set(term);
+		break;
+	case COMBINE(GPS_SENTENCE_GPRMC, 1): // Time in both sentences
     case COMBINE(GPS_SENTENCE_GPGGA, 1):
       time.setTime(term);
       break;
