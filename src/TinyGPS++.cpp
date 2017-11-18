@@ -100,7 +100,6 @@ TinyGPSPlus::TinyGPSPlus()
 
 bool TinyGPSPlus::encode(char c)
 {
-	Serial.println(F("weatherStation.ino"));
   ++encodedCharCount;
 
   switch(c)
@@ -282,6 +281,7 @@ bool TinyGPSPlus::endOfTermHandler()
 
     return false;
   }
+  Serial.println(term);
 
   if (curSentenceType != GPS_SENTENCE_OTHER && term[0])
     switch(COMBINE(curSentenceType, curTermNumber))
