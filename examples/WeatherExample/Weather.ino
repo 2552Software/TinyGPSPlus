@@ -42,10 +42,6 @@ void loop()
 void displayInfo()
 {
   Serial.print(F("weatherStation: ")); 
-  TinyGPSSpeed windSpeed;
-  TinyGPSDecimal windDirection;
-  Baro barometric;
-  Tempature tempature;
   if (weatherStation.windSpeed.isValid())
   {
     Serial.print(weatherStation.windSpeed.value(), 6);
