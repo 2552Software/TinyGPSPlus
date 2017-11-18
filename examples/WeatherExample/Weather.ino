@@ -17,7 +17,7 @@ SoftwareSerial station(RXPin, TXPin);
 
 void setup()
 {
-  Serial.begin(115200);
+  Serial.begin(9600);
   station.begin(weatherStationBaud);
 
   Serial.println(F("weatherStation.ino"));
@@ -28,9 +28,10 @@ void setup()
 void loop()
 {
   // This sketch displays information every time a new sentence is correctly encoded.
-  while (station.available() > 0)
+  while (station.available() > 0){
     if (weatherStation.encode(station.read()))
       displayInfo();
+  }
 
   if (millis() > 5000 && weatherStation.charsProcessed() < 10)
   {
@@ -44,6 +45,7 @@ void displayInfo()
   Serial.print(F("weatherStation: ")); 
   if (weatherStation.windSpeed.isValid())
   {
+    Serial.print(F("Wind speed: ")); 
     Serial.print(weatherStation.windSpeed.value(), 6);
   }
   else
@@ -54,6 +56,7 @@ void displayInfo()
   Serial.print(F(" "));
   if (weatherStation.windDirection.isValid())
   {
+    Serial.print(F("Wind direction: ")); 
     Serial.print(weatherStation.windDirection.value(), 6);
   }
   else
@@ -64,6 +67,7 @@ void displayInfo()
   Serial.print(F(" "));
   if (weatherStation.barometric.isValid())
   {
+    Serial.print(F("Barometric pressure: ")); 
     Serial.print(weatherStation.barometric.value(), 6);
   }
   else
@@ -74,6 +78,7 @@ void displayInfo()
   Serial.print(F(" "));
   if (weatherStation.tempature.isValid())
   {
+    Serial.print(F("Tempature: ")); 
     Serial.print(weatherStation.tempature.value(), 6);
   }
   else
