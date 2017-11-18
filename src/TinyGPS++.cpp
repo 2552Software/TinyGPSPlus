@@ -290,7 +290,7 @@ bool TinyGPSPlus::endOfTermHandler()
 		break;
 	case COMBINE(WMIDA_SENTENCE, 1):
 		barometric.set(term);
-		brea;
+		break;
 	case COMBINE(WMIDA_SENTENCE, 5):
 		tempature.set(term);
 		break;
