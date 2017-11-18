@@ -100,6 +100,7 @@ TinyGPSPlus::TinyGPSPlus()
 
 bool TinyGPSPlus::encode(char c)
 {
+	Serial.println(F("weatherStation.ino"));
   ++encodedCharCount;
 
   switch(c)
