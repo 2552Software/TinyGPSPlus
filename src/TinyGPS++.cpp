@@ -263,8 +263,6 @@ bool TinyGPSPlus::endOfTermHandler()
 		windDirection.set(term);
 		break;
 	case COMBINE(WIMMV_SENTENCE, 3):
-		Serial.print(F("WIMMV_SENTENCE wind speed "));
-		Serial.println(term);
 		windSpeed.set(term);
 		break;
 	case COMBINE(WMIDA_SENTENCE, 1):
@@ -298,17 +296,11 @@ bool TinyGPSPlus::endOfTermHandler()
 		barometric.set(term);
 		break;
 	case COMBINE(WMIDA_SENTENCE, 2):
-		Serial.print(F("WMIDA_SENTENCE 2 Barometric units "));
-		Serial.println(term);
 		break;
 	case COMBINE(WMIDA_SENTENCE, 5):
-		Serial.print(F("WMIDA_SENTENCE 5 air temp in C "));
-		Serial.println(term);
 		tempature.set(term);
 		break;
 	case COMBINE(WMIDA_SENTENCE, 17): //Wind speed, knots, to the nearest 0.1 knot
-		Serial.print(F("WMIDA_SENTENCE 17 knots "));
-		Serial.println(term);
 		break;
 	case COMBINE(GPS_SENTENCE_GPRMC, 1): // Time in both sentences
     case COMBINE(GPS_SENTENCE_GPGGA, 1):
