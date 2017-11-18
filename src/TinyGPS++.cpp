@@ -27,54 +27,9 @@ Foundation, Inc., 51 Franklin St, Fifth Floor, Boston, MA  02110-1301  USA
 #include <ctype.h>
 #include <stdlib.h>
 
-/* driver 
-if buf[0] == '$WIMDA': #  Meteorological Composite   Air Temp, Barometric Preasure
-
-try:
-
-data['altimeter'] = float(buf[1])
-
-data['outTemp'] = float(buf[5]) * 1.8 + 32
-
-except (ValueError):
-
-logerr("Wrong data format for $WIMDA '%s, %s, %s, %s, %s, %s, %s'" % (buf[1], buf[5], buf[9], buf[11], buf[13], buf[15], buf[17]))
-
-elif buf[0] == '$WIMWV': # Wind Speed and Angle
-
-if buf[5] == 'A':
-
-if buf[2] == 'R':
-
-try:
-
-data['windDir'] = float(buf[1])
-
-data['windSpeed'] = float(buf[3]) / 1.15077945
-
-except (ValueError):
-
-logerr("Wrong data format for $WIMWV A-R '%s, %s'" % (buf[1], buf[3]))
-
-elif buf[2] == 'T':
-
-try:
-
-data['windDir'] = float(buf[1])
-
-data['windSpeed'] = float(buf[3]) / 1.15077945
-
-except (ValueError):
-
-logerr("Wrong data format for $WIMWV A-T '%s, %s'" % (buf[1], buf[3]))
-
-return data*/
-
 #define _GPRMCterm   "GPRMC"
 #define _GPGGAterm   "GPGGA"
-//'$WIMWV': # Wind Speed and Angle
 #define _WIMWV   "WIMWV"
-//'$WIMDA': #  Meteorological Composite   Air Temp, Barometric Preasure
 #define _WIMDA   "WIMDA"
 
 TinyGPSPlus::TinyGPSPlus()
@@ -293,24 +248,70 @@ bool TinyGPSPlus::endOfTermHandler()
     switch(COMBINE(curSentenceType, curTermNumber))
   {
 	case COMBINE(WIMMV_SENTENCE, 1):
-		Serial.print(F("WIMMV_SENTENCE 1 "));
-		Serial.println(term);
+		/* WI - Weather Instruments
+		MWV Wind Speed and Angle
+		1 2 3 4 5
+		| | | | |
+		$--MWV, x.x, a, x.x, a*hh
+		1) Wind Angle, 0 to 360 degrees
+		2) Reference, R = Relative, T = True
+		3) Wind Speed
+		4) Wind Speed Units, K / M / N
+		5) Status, A = Data Valid
+		6) Checksum
+		*/
 		windDirection.set(term);
 		break;
 	case COMBINE(WIMMV_SENTENCE, 3):
-		Serial.print(F("WIMMV_SENTENCE 3 "));
-		Serial.println(term);
 		windSpeed.set(term);
 		break;
-	case COMBINE(WMIDA_SENTENCE, 1):
-		Serial.print(F("WMIDA_SENTENCE 1 "));
+	case COMBINE(WIMMV_SENTENCE, 6):
+		windSpeed.windSpeedUnits = *term;
+		Serial.print(F("WIMMV_SENTENCE units "));
 		Serial.println(term);
+		break;
+	case COMBINE(WMIDA_SENTENCE, 1):
+		/*
+		Syntax
+		$WIMDA,<1>,<2>,<3>,<4>,<5>,<6>,<7>,<8>,<9>,<10>,<11>,<12>,<13>,<14>,<15>,<16>,
+		<17>,<18>,<19>,<20>*hh<CR><LF>
+
+		Fields
+		<1>    Barometric pressure, inches of mercury, to the nearest 0.01 inch
+		<2>    I = inches of mercury
+		<3>    Barometric pressure, bars, to the nearest .001 bar
+		<4>    B = bars
+		<5>    Air temperature, degrees C, to the nearest 0.1 degree C
+		<6>    C = degrees C
+		<7>    Water temperature, degrees C (this field left blank by WeatherStation)
+		<8>    C = degrees C (this field left blank by WeatherStation)
+		<9>    Relative humidity, percent, to the nearest 0.1 percent
+		<10>   Absolute humidity, percent (this field left blank by WeatherStation)
+		<11>   Dew point, degrees C, to the nearest 0.1 degree C
+		<12>   C = degrees C
+		<13>   Wind direction, degrees True, to the nearest 0.1 degree
+		<14>   T = true
+		<15>   Wind direction, degrees Magnetic, to the nearest 0.1 degree
+		<16>   M = magnetic
+		<17>   Wind speed, knots, to the nearest 0.1 knot
+		<18>   N = knots
+		<19>   Wind speed, meters per second, to the nearest 0.1 m/s
+		<20>   M = meters per second
+		*/
 		barometric.set(term);
 		break;
+	case COMBINE(WMIDA_SENTENCE, 2):
+		Serial.print(F("WMIDA_SENTENCE 2 Barometric units "));
+		Serial.println(term);
+		break;
 	case COMBINE(WMIDA_SENTENCE, 5):
-		Serial.print(F("WMIDA_SENTENCE 5 "));
+		Serial.print(F("WMIDA_SENTENCE 5 air temp in C "));
 		Serial.println(term);
 		tempature.set(term);
+		break;
+	case COMBINE(WMIDA_SENTENCE, 17): //Wind speed, knots, to the nearest 0.1 knot
+		Serial.print(F("WMIDA_SENTENCE 17 knots "));
+		Serial.println(term);
 		break;
 	case COMBINE(GPS_SENTENCE_GPRMC, 1): // Time in both sentences
     case COMBINE(GPS_SENTENCE_GPGGA, 1):
