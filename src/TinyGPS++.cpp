@@ -281,21 +281,28 @@ bool TinyGPSPlus::endOfTermHandler()
 
     return false;
   }
-  Serial.println(term);
 
   if (curSentenceType != GPS_SENTENCE_OTHER && term[0])
     switch(COMBINE(curSentenceType, curTermNumber))
   {
 	case COMBINE(WIMMV_SENTENCE, 1):
+		Serial.print(F("WIMMV_SENTENCE 1 "));
+		Serial.println(term);
 		windDirection.set(term);
 		break;
 	case COMBINE(WIMMV_SENTENCE, 3):
+		Serial.print(F("WIMMV_SENTENCE 3 "));
+		Serial.println(term);
 		windSpeed.set(term);
 		break;
 	case COMBINE(WMIDA_SENTENCE, 1):
+		Serial.print(F("WMIDA_SENTENCE 1 "));
+		Serial.println(term);
 		barometric.set(term);
 		break;
 	case COMBINE(WMIDA_SENTENCE, 5):
+		Serial.print(F("WMIDA_SENTENCE 5 "));
+		Serial.println(term);
 		tempature.set(term);
 		break;
 	case COMBINE(GPS_SENTENCE_GPRMC, 1): // Time in both sentences
