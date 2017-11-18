@@ -142,6 +142,13 @@ bool TinyGPSPlus::encode(char c)
   return false;
 }
 
+void TinyGPSDouble::commit() {
+	val = newval;
+	lastCommitTime = millis();
+	valid = updated = true;
+}
+
+
 //
 // internal utilities
 //

@@ -182,10 +182,7 @@ private:
 	uint32_t lastCommitTime;
 	double val, newval;
 	void set(const char *term)	{newval = atof(term);}
-	void commit()	{
-		lastCommitTime = millis();
-		valid = updated = true; 
-	}
+	void commit();
 };
 
 struct TinyGPSSpeed : TinyGPSDecimal
