@@ -204,7 +204,7 @@ struct TinyGPSWindSpeed : TinyGPSDouble
 
 struct Tempature : TinyGPSDouble
 {
-	double F() { return value()* 1.8 + 32.0; } //
+	double F() { return (value() * 1.8) + 32.0; } 
 	double C() { return value(); } // data stored in C
 };
 
