@@ -1,12 +1,12 @@
 {
   "name": "TinyGPSPlus",
   "version": "1.0.0",
-  "keywords": "gps,NMEA",
+  "keywords": "gps,NMEA,weather station",
   "description": "A new, customizable Arduino NMEA parsing library",
   "repository":
   {
     "type": "git",
-    "url": "https://github.com/mikalhart/TinyGPSPlus.git"
+    "url": "https://github.com/2552Software/TinyGPSPlus.git"
   },
   "authors":
   [
