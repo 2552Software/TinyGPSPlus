@@ -286,6 +286,7 @@ bool TinyGPSPlus::endOfTermHandler()
     switch(COMBINE(curSentenceType, curTermNumber))
   {
 	case COMBINE(WIMMV_SENTENCE, 1):
+		parseDegrees
 		windDirection.set(term);
 		break;
 	case COMBINE(WIMMV_SENTENCE, 3):

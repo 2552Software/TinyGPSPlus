@@ -163,6 +163,30 @@ private:
    void set(const char *term);
 };
 
+struct TinyGPSDouble
+{
+	friend class TinyGPSPlus;
+public:
+	bool isValid() const { return valid; }
+	bool isUpdated() const { return updated; }
+	uint32_t age() const { return valid ? millis() - lastCommitTime : (uint32_t)ULONG_MAX; }
+	double value() { updated = false; return val; }
+
+	TinyGPSDouble() : valid(false), updated(false), val(0.0)
+	{}
+
+private:
+	bool valid, updated;
+	uint32_t lastCommitTime;
+	double val, newval;
+	void commit();
+	void set(const char *term)	{newval = atof(term);}
+	void commit()	{
+		lastCommitTime = millis();
+		valid = updated = true;
+	}
+};
+
 struct TinyGPSSpeed : TinyGPSDecimal
 {
    double knots()    { return value() / 100.0; }
@@ -171,15 +195,24 @@ struct TinyGPSSpeed : TinyGPSDecimal
    double kmph()     { return _GPS_KMPH_PER_KNOT * value() / 100.0; }
 };
 
-struct Tempature : TinyGPSDecimal
+struct TinyGPSWindSpeed : TinyGPSDouble
+{
+	double knots() { return value() / 100.0; }
+	double mph() { return _GPS_MPH_PER_KNOT * value() / 100.0; }
+	double mps() { return _GPS_MPS_PER_KNOT * value() / 100.0; }
+	double kmph() { return _GPS_KMPH_PER_KNOT * value() / 100.0; }
+};
+
+struct Tempature : TinyGPSDouble
 {
 	double f() { return value(); }
 	double c() { return value(); } // todo
 };
 
+
 // barotmetic
 //https://www.sensorsone.com/barometric-mbar-hpa-psi-inhg-mmhg-torr-conversion-table/
-struct Baro : TinyGPSDecimal
+struct Baro : TinyGPSDouble
 {
 	double inHg() { return value(); }
 	double psi() { return value(); } // todo
@@ -243,8 +276,8 @@ public:
   TinyGPSAltitude altitude;
   TinyGPSInteger satellites;
   TinyGPSDecimal hdop;
-  TinyGPSSpeed windSpeed;
-  TinyGPSDecimal windDirection;
+  TinyGPSWindSpeed windSpeed;
+  TinyGPSDouble windDirection;
   Baro barometric;
   Tempature tempature;
 
