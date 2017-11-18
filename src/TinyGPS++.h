@@ -40,6 +40,8 @@ Foundation, Inc., 51 Franklin St, Fifth Floor, Boston, MA  02110-1301  USA
 #define _GPS_FEET_PER_METER 3.2808399
 #define _GPS_MAX_FIELD_SIZE 15
 
+#include <SoftwareSerial.h>
+
 struct RawDegrees
 {
    uint16_t deg;
