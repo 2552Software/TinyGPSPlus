@@ -195,11 +195,7 @@ struct TinyGPSSpeed : TinyGPSDecimal
 
 struct TinyGPSWindSpeed : TinyGPSDouble
 {
-	double knots() { return value() / 100.0; }
-	double mph() { return _GPS_MPH_PER_KNOT * value() / 100.0; }
-	double mps() { return _GPS_MPS_PER_KNOT * value() / 100.0; }
-	double kmph() { return _GPS_KMPH_PER_KNOT * value() / 100.0; }
-	char windSpeedUnits;
+	double knots() { return value(); } // reported in knots
 };
 
 struct Tempature : TinyGPSDouble

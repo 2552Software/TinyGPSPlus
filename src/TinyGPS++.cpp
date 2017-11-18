@@ -267,11 +267,6 @@ bool TinyGPSPlus::endOfTermHandler()
 		Serial.println(term);
 		windSpeed.set(term);
 		break;
-	case COMBINE(WIMMV_SENTENCE, 4):
-		windSpeed.windSpeedUnits = *term;
-		Serial.print(F("WIMMV_SENTENCE units "));
-		Serial.println(windSpeed.windSpeedUnits);
-		break;
 	case COMBINE(WMIDA_SENTENCE, 1):
 		/*
 		Syntax
