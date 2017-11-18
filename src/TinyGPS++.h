@@ -179,11 +179,10 @@ private:
 	bool valid, updated;
 	uint32_t lastCommitTime;
 	double val, newval;
-	void commit();
 	void set(const char *term)	{newval = atof(term);}
 	void commit()	{
 		lastCommitTime = millis();
-		valid = updated = true;
+		valid = updated = true; 
 	}
 };
 
