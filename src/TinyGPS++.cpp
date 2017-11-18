@@ -263,12 +263,14 @@ bool TinyGPSPlus::endOfTermHandler()
 		windDirection.set(term);
 		break;
 	case COMBINE(WIMMV_SENTENCE, 3):
+		Serial.print(F("WIMMV_SENTENCE wind speed "));
+		Serial.println(term);
 		windSpeed.set(term);
 		break;
 	case COMBINE(WIMMV_SENTENCE, 4):
 		windSpeed.windSpeedUnits = *term;
 		Serial.print(F("WIMMV_SENTENCE units "));
-		Serial.println(term);
+		Serial.println(windSpeed.windSpeedUnits);
 		break;
 	case COMBINE(WMIDA_SENTENCE, 1):
 		/*
