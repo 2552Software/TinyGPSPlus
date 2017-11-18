@@ -45,8 +45,8 @@ void displayInfo()
   Serial.print(F("weatherStation: ")); 
   if (weatherStation.windSpeed.isValid())
   {
-    Serial.print(F("Wind speed: ")); 
-    Serial.print(weatherStation.windSpeed.value(), 6);
+    Serial.print(F("Wind speed in knots: ")); 
+    Serial.print(weatherStation.windSpeed.knots(), 6);
   }
   else
   {
