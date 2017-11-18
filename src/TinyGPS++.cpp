@@ -296,7 +296,7 @@ bool TinyGPSPlus::endOfTermHandler()
 		break;
 	case COMBINE(GPS_SENTENCE_GPRMC, 1): // Time in both sentences
     case COMBINE(GPS_SENTENCE_GPGGA, 1):
-      time.setTime(term);
+      time.setTime(term); 
       break;
     case COMBINE(GPS_SENTENCE_GPRMC, 2): // GPRMC validity
       sentenceHasFix = term[0] == 'A';
